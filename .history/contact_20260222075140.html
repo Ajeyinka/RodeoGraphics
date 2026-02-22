@@ -290,13 +290,12 @@
       function validateField(field) {
         let errorEl;
 
-        // Handle radio group
+        // Handle radio group properly
         if (field.type === "radio") {
           const fieldset = field.closest("fieldset");
           errorEl = fieldset.querySelector(".error-message");
 
           const checked = fieldset.querySelector("input[type='radio']:checked");
-
           if (!checked) {
             errorEl.textContent = "Please select a project type";
             return false;
@@ -306,28 +305,18 @@
           return true;
         }
 
+        // Normal inputs + textarea
         errorEl = field.parentElement.querySelector(".error-message");
 
-        // Optional phone validation
+        // Custom phone validation
         if (field.type === "tel") {
-          const value = field.value.trim();
-
-          // If empty, it's valid because it's optional
-          if (value === "") {
-            errorEl.textContent = "";
-            return true;
-          }
-
           const phoneRegex = /^\+?[0-9\s\-()]{7,20}$/;
 
-          if (!phoneRegex.test(value)) {
+          if (!phoneRegex.test(field.value.trim())) {
             errorEl.textContent =
               field.dataset.error || "Please enter a valid phone number";
             return false;
           }
-
-          errorEl.textContent = "";
-          return true;
         }
 
         // Default HTML validation
@@ -363,8 +352,7 @@
         });
 
         if (isValid) {
-          form.submit();
-          form.reset();
+          form.submit(); // send to Formspree
         } else {
           const firstInvalid = form.querySelector(":invalid");
           if (firstInvalid) firstInvalid.focus();

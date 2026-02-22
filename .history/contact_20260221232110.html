@@ -81,11 +81,8 @@
               </div>
             </div>
             <div class="form-block">
-              <form
-                novalidate
-                action="https://formspree.io/f/xzdapnao"
-                method="POST"
-              >
+              /* action="https://formspree.io/f/xzdapnao" method="POST */
+              <form novalidate>
                 <div class="form-group">
                   <label for="fname">First Name</label>
                   <input
@@ -104,6 +101,7 @@
                     name="last_name"
                     class="input"
                     id="lName"
+                    required
                   />
                   <span class="error-message" aria-live="polite"></span>
                 </div>
@@ -113,7 +111,6 @@
                     type="email"
                     name="company_email"
                     class="input"
-                    data-error="Please enter a Valid email address"
                     id="email"
                     required
                   />
@@ -123,15 +120,12 @@
                   <label for="tel"> Phone Number</label>
                   <input
                     type="tel"
-                    name="phone"
                     class="input phone-input"
                     placeholder="+1 801 234 5678"
                     inputmode="tel"
                     autocomplete="tel"
                     id="tel"
-                    data-error="Please enter a valid phone number"
                   />
-
                   <span class="error-message" aria-live="polite"></span>
                 </div>
 
@@ -153,23 +147,23 @@
                   <div class="form-group">
                     <input
                       type="radio"
-                      id="motion"
+                      id="general"
                       name="project"
-                      value="Motion Graphics"
+                      value="General Equiry"
                       required
                     />
-                    <label for="motion">Motion Graphics</label>
+                    <label for="general">General Equiry</label>
                   </div>
 
                   <div class="form-group">
                     <input
                       type="radio"
-                      id="video"
+                      id="support"
                       name="project"
-                      value="Video Editing"
+                      value="General Requesr"
                       required
                     />
-                    <label for="video">Video Editing</label>
+                    <label for="support">General Request</label>
                   </div>
                   <span class="error-message" aria-live="polite"></span>
                 </fieldset>
@@ -178,7 +172,7 @@
                   <label for="message">Message</label>
                   <textarea
                     name="textarea"
-                    id="message"
+                    id="textarea"
                     class="input"
                     placeholder="Enter a message"
                     required
@@ -191,15 +185,16 @@
                   <span class="error-message" aria-live="polite"></span>
                 </div>
 
-                <div class="input-submit">
+                <input type="submit" value="Submit" />
+
+                <!-- <div class="input-submit">
                   <button type="submit" class="button-submit button">
                     <span class="text text-primary">Submit</span>
                   </button>
-                </div>
-
-                <!--  <div class="form-success">
-                  Thanks for reaching out. I’ll get back to you within 24 hours.
                 </div> -->
+                <div class="form-success">
+                  Thanks for reaching out. I’ll get back to you within 24 hours.
+                </div>
               </form>
             </div>
           </div>
@@ -284,77 +279,24 @@
   <script>
     (function () {
       "use strict";
-
       const form = document.querySelector("form");
 
       function validateField(field) {
-        let errorEl;
-
-        // Handle radio group
-        if (field.type === "radio") {
-          const fieldset = field.closest("fieldset");
-          errorEl = fieldset.querySelector(".error-message");
-
-          const checked = fieldset.querySelector("input[type='radio']:checked");
-
-          if (!checked) {
-            errorEl.textContent = "Please select a project type";
-            return false;
-          }
-
-          errorEl.textContent = "";
-          return true;
-        }
-
-        errorEl = field.parentElement.querySelector(".error-message");
-
-        // Optional phone validation
-        if (field.type === "tel") {
-          const value = field.value.trim();
-
-          // If empty, it's valid because it's optional
-          if (value === "") {
-            errorEl.textContent = "";
-            return true;
-          }
-
-          const phoneRegex = /^\+?[0-9\s\-()]{7,20}$/;
-
-          if (!phoneRegex.test(value)) {
-            errorEl.textContent =
-              field.dataset.error || "Please enter a valid phone number";
-            return false;
-          }
-
-          errorEl.textContent = "";
-          return true;
-        }
-
-        // Default HTML validation
+        const errorEl = field.parentElement.querySelector(".error-message");
         if (!field.validity.valid) {
-          errorEl.textContent = field.dataset.error || "This field is required";
+          errorEl.textContent = "This field is required";
+          console.log("fied is invalid:", field);
           return false;
         }
 
-        errorEl.textContent = "";
+        console.log("field is valid");
         return true;
       }
-
-      // Validate on blur
-      form.querySelectorAll("input, textarea").forEach((input) => {
-        input.addEventListener("blur", () => {
-          validateField(input);
-        });
-      });
-
-      // Submit handler
       form.addEventListener("submit", function (e) {
         e.preventDefault();
 
         let isValid = true;
-
         const fields = form.querySelectorAll("input, textarea");
-
         fields.forEach((field) => {
           const fieldValid = validateField(field);
           if (!fieldValid) {
@@ -363,11 +305,9 @@
         });
 
         if (isValid) {
-          form.submit();
-          form.reset();
+          console.log("red");
         } else {
-          const firstInvalid = form.querySelector(":invalid");
-          if (firstInvalid) firstInvalid.focus();
+          console.log("green");
         }
       });
     })();

@@ -1059,7 +1059,7 @@ textarea,
   border: 1px solid transparent;
 
   background-color: #ededea;
-  outline: none;
+  outline-offset: 0px;
   padding: 1rem 0.7rem;
   transition: 0.25s;
   text-transform: none;
@@ -1098,6 +1098,10 @@ textarea,
   font-family: var(--ff-headings);
 }
 
+.input:focus-visible {
+  background-color: #efefef;
+  border: 1px solid var(--accent-clr);
+}
 .input:hover {
   background-color: #f2f2ef;
 }

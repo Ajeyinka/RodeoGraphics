@@ -130,6 +130,7 @@
                     autocomplete="tel"
                     id="tel"
                     data-error="Please enter a valid phone number"
+                    required
                   />
 
                   <span class="error-message" aria-live="polite"></span>
@@ -284,53 +285,26 @@
   <script>
     (function () {
       "use strict";
-
       const form = document.querySelector("form");
 
       function validateField(field) {
-        let errorEl;
+        const errorEl =
+          field.type === "radio"
+            ? field.closest("fieldset").querySelector(".error-message")
+            : field.parentElement.querySelector(".error-message");
 
-        // Handle radio group
-        if (field.type === "radio") {
-          const fieldset = field.closest("fieldset");
-          errorEl = fieldset.querySelector(".error-message");
-
-          const checked = fieldset.querySelector("input[type='radio']:checked");
-
-          if (!checked) {
-            errorEl.textContent = "Please select a project type";
-            return false;
-          }
-
-          errorEl.textContent = "";
-          return true;
-        }
-
-        errorEl = field.parentElement.querySelector(".error-message");
-
-        // Optional phone validation
+        // 🔹 Custom phone validation
         if (field.type === "tel") {
-          const value = field.value.trim();
-
-          // If empty, it's valid because it's optional
-          if (value === "") {
-            errorEl.textContent = "";
-            return true;
-          }
-
           const phoneRegex = /^\+?[0-9\s\-()]{7,20}$/;
 
-          if (!phoneRegex.test(value)) {
+          if (!phoneRegex.test(field.value.trim())) {
             errorEl.textContent =
               field.dataset.error || "Please enter a valid phone number";
             return false;
           }
-
-          errorEl.textContent = "";
-          return true;
         }
 
-        // Default HTML validation
+        // 🔹 Default HTML validation
         if (!field.validity.valid) {
           errorEl.textContent = field.dataset.error || "This field is required";
           return false;
@@ -340,14 +314,12 @@
         return true;
       }
 
-      // Validate on blur
       form.querySelectorAll("input, textarea").forEach((input) => {
         input.addEventListener("blur", () => {
           validateField(input);
         });
       });
 
-      // Submit handler
       form.addEventListener("submit", function (e) {
         e.preventDefault();
 
@@ -356,18 +328,20 @@
         const fields = form.querySelectorAll("input, textarea");
 
         fields.forEach((field) => {
+          console.log(`Checking ${field.name}`);
           const fieldValid = validateField(field);
+
           if (!fieldValid) {
             isValid = false;
           }
         });
 
         if (isValid) {
+          // send form data
           form.submit();
           form.reset();
         } else {
-          const firstInvalid = form.querySelector(":invalid");
-          if (firstInvalid) firstInvalid.focus();
+          form.querySelector(":invalid").focus();
         }
       });
     })();

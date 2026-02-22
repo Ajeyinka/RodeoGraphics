@@ -363,8 +363,7 @@
         });
 
         if (isValid) {
-          form.submit();
-          form.reset();
+          form.submit(); // sends to Formspree
         } else {
           const firstInvalid = form.querySelector(":invalid");
           if (firstInvalid) firstInvalid.focus();

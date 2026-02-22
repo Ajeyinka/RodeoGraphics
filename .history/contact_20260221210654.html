@@ -81,11 +81,7 @@
               </div>
             </div>
             <div class="form-block">
-              <form
-                novalidate
-                action="https://formspree.io/f/xzdapnao"
-                method="POST"
-              >
+              <form action="https://formspree.io/f/xzdapnao" method="POST">
                 <div class="form-group">
                   <label for="fname">First Name</label>
                   <input
@@ -95,7 +91,6 @@
                     id="fName"
                     required
                   />
-                  <span class="error-message" aria-live="polite"></span>
                 </div>
                 <div class="form-group">
                   <label for="lname">Last Name</label>
@@ -104,102 +99,94 @@
                     name="last_name"
                     class="input"
                     id="lName"
+                    required
                   />
-                  <span class="error-message" aria-live="polite"></span>
                 </div>
-                <div class="form-group span-all">
+                <div class="form-group">
                   <label for="email">Company Email</label>
                   <input
                     type="email"
                     name="company_email"
                     class="input"
-                    data-error="Please enter a Valid email address"
                     id="email"
                     required
                   />
-                  <span class="error-message" aria-live="polite"></span>
                 </div>
                 <div class="form-group">
                   <label for="tel"> Phone Number</label>
                   <input
                     type="tel"
-                    name="phone"
                     class="input phone-input"
                     placeholder="+1 801 234 5678"
                     inputmode="tel"
                     autocomplete="tel"
                     id="tel"
-                    data-error="Please enter a valid phone number"
                   />
-
-                  <span class="error-message" aria-live="polite"></span>
                 </div>
 
                 <div class="form-group">
-                  <label for="company">Company</label>
-
-                  <input
-                    type="text"
-                    name="company"
-                    class="input"
-                    id="company"
-                  />
-                  <span class="error-message" aria-live="polite"></span>
+                  <label for="company"></label>
                 </div>
 
-                <fieldset class="span-all">
-                  <legend>Project Type</legend>
-
-                  <div class="form-group">
+                <fieldset>
+                  <label for="company">
+                    Company
                     <input
-                      type="radio"
-                      id="motion"
-                      name="project"
-                      value="Motion Graphics"
-                      required
+                      type="text"
+                      name="company"
+                      class="input"
+                      id="company"
                     />
-                    <label for="motion">Motion Graphics</label>
-                  </div>
-
-                  <div class="form-group">
-                    <input
-                      type="radio"
-                      id="video"
-                      name="project"
-                      value="Video Editing"
-                      required
-                    />
-                    <label for="video">Video Editing</label>
-                  </div>
-                  <span class="error-message" aria-live="polite"></span>
+                  </label>
                 </fieldset>
-
-                <div class="form-group span-all">
+                <fieldset>
+                  <label>
+                    Project Type
+                    <select class="input select" name="project type">
+                      <option value="" disabled selected>
+                        Select an option
+                      </option>
+                      <option value="saas">SaaS/Explainer Video</option>
+                      <option value="2d explainer">2D Explainer Video</option>
+                      <option value="logo">Logo Animation</option>
+                      <option value="ai vide0">
+                        AI branding/product Launch Video
+                      </option>
+                      <option value="website">Website Interphase</option>
+                      <option value="short form">Short Form Edit Video</option>
+                    </select>
+                  </label>
+                  <label>
+                    Budget
+                    <select class="input select" name="budget">
+                      <option value="" disabled selected>
+                        Select an option
+                      </option>
+                      <option value="$0-$200">$0-$200</option>
+                      <option value="$200-$500">$200-$500</option>
+                      <option value="$500-$1000">$500-$1000</option>
+                      <option value="$1000-above">$1000 and Above</option>
+                    </select>
+                  </label>
+                </fieldset>
+                <div class="form-group">
                   <label for="message">Message</label>
                   <textarea
                     name="textarea"
-                    id="message"
+                    id="textarea"
                     class="input"
                     placeholder="Enter a message"
-                    required
                   ></textarea>
-                  <span class="error-message" aria-live="polite"></span>
-                </div>
-                <div class="form-group span-all">
-                  <input type="checkbox" name="consent" id="consent" required />
-                  <label for="consent">I consent to being contacted</label>
-                  <span class="error-message" aria-live="polite"></span>
                 </div>
 
                 <div class="input-submit">
                   <button type="submit" class="button-submit button">
-                    <span class="text text-primary">Submit</span>
+                    <span class="text text-primary">See my portfolio</span>
                   </button>
                 </div>
-
-                <!--  <div class="form-success">
+                <div class="form-success">
                   Thanks for reaching out. I’ll get back to you within 24 hours.
-                </div> -->
+                </div>
               </form>
             </div>
           </div>
@@ -281,95 +268,4 @@
       </div>
     </footer>
   </body>
-  <script>
-    (function () {
-      "use strict";
-
-      const form = document.querySelector("form");
-
-      function validateField(field) {
-        let errorEl;
-
-        // Handle radio group
-        if (field.type === "radio") {
-          const fieldset = field.closest("fieldset");
-          errorEl = fieldset.querySelector(".error-message");
-
-          const checked = fieldset.querySelector("input[type='radio']:checked");
-
-          if (!checked) {
-            errorEl.textContent = "Please select a project type";
-            return false;
-          }
-
-          errorEl.textContent = "";
-          return true;
-        }
-
-        errorEl = field.parentElement.querySelector(".error-message");
-
-        // Optional phone validation
-        if (field.type === "tel") {
-          const value = field.value.trim();
-
-          // If empty, it's valid because it's optional
-          if (value === "") {
-            errorEl.textContent = "";
-            return true;
-          }
-
-          const phoneRegex = /^\+?[0-9\s\-()]{7,20}$/;
-
-          if (!phoneRegex.test(value)) {
-            errorEl.textContent =
-              field.dataset.error || "Please enter a valid phone number";
-            return false;
-          }
-
-          errorEl.textContent = "";
-          return true;
-        }
-
-        // Default HTML validation
-        if (!field.validity.valid) {
-          errorEl.textContent = field.dataset.error || "This field is required";
-          return false;
-        }
-
-        errorEl.textContent = "";
-        return true;
-      }
-
-      // Validate on blur
-      form.querySelectorAll("input, textarea").forEach((input) => {
-        input.addEventListener("blur", () => {
-          validateField(input);
-        });
-      });
-
-      // Submit handler
-      form.addEventListener("submit", function (e) {
-        e.preventDefault();
-
-        let isValid = true;
-
-        const fields = form.querySelectorAll("input, textarea");
-
-        fields.forEach((field) => {
-          const fieldValid = validateField(field);
-          if (!fieldValid) {
-            isValid = false;
-          }
-        });
-
-        if (isValid) {
-          form.submit();
-          form.reset();
-        } else {
-          const firstInvalid = form.querySelector(":invalid");
-          if (firstInvalid) firstInvalid.focus();
-        }
-      });
-    })();
-  </script>
 </html>
